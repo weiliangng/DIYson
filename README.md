@@ -22,3 +22,4 @@ step 2: once it starts rotating, switch pulse exactly when the hall sensor inter
 step 3: to speed it up, phase shift the drive waveform a little bit forward, this is accomplished by settomg timer1 to fire a little earlier than the previous edge
 
 
+Spot the cringe: reset function and lazy virtual ground/supplies
