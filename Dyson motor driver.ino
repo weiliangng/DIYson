@@ -15,8 +15,8 @@
 
 #define HALL_EFFECT 2
 #define PIN2_MASK (1 << PD2)//saves the MCU from doing a bitshift LOL
-#define LBRIDGE A0 //3  oc2b
-#define RBRIDGE A1 //11 oc2a
+#define LBRIDGE A2 
+#define RBRIDGE A3 
 
 volatile uint8_t phase_advance = 12; //16  for full length[NOT RECOMMENDED, glitchy] minimum 12(75% earlier), 2 for 12.5% //period*16 000 000Hz/1000 000uS*phase_advance_%/100%;
 volatile uint32_t abstickin;//absolute time of last input pulse
@@ -25,14 +25,12 @@ volatile bool steadystate = false;//motor spinning steadily at transition phase
 volatile bool stopped = true;//motor at rest
 volatile uint32_t starttime = 0;
 
-void(* resetFunc) (void) = 0;
+void(* resetFunc) (void) = 0;//wacky software reset function
 
 void brake(){//for debugging only
   cli();
   digitalWrite(LBRIDGE, LOW);
   digitalWrite(RBRIDGE, LOW);
-  digitalWrite(A2, LOW);
-  digitalWrite(A3, LOW);
   while(1){}
 }
 
@@ -91,11 +89,10 @@ void setup() {
   pinMode(4, OUTPUT);
   digitalWrite(3, LOW);//virtual gnd
   digitalWrite(4, HIGH);//virtual vcc
+  
   //set ddr for hbridge pins
   pinMode(A0, OUTPUT);
   pinMode(A1, OUTPUT);
-  pinMode(A2, OUTPUT);
-  pinMode(A3, OUTPUT);
   pinMode(13, OUTPUT);
   
   // Enable INT0 interrupt (pin2)
@@ -127,7 +124,6 @@ void setup() {
   phase_advance = 7;
   delay(200);
   phase_advance = 6;//max at 12v input
-  
 }
 
 void loop() {//blinken status LEDs to show that the code has reached the main loop
