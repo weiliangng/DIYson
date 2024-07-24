@@ -14,7 +14,7 @@ A single phase motor only has 2 methods of control: amplitude and phase. Here, w
 Then, I tuned the phase shift until max speed and efficiency is achieved. Speed control could be achieved by varying the input voltage with a variable buck OR very high frequency PWM minimum 160khz or rather depending on motor coil inductance (unachievable by atmega MCUs and most hobby H bridge modules)
 
 
-WARNING: I blanket switch the whole of PORTC since i have extra pins and those arent used to save cycles
+WARNING: I blanket switch the whole of PORTC to save cycles since i have extra pins and those arent used.
 
 
 step 1: poke motor a few times by alternating polarity until the hall sensor catches
