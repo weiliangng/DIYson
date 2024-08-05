@@ -21,9 +21,26 @@ Heres a few problems/design conflicts:
 3. So I ditched PWM to remove the delay before the PWM peripheral fires and simply fullsend the motor ie it is stuck at max speed
 4. This would significantly reduce mosfet switching losses by 3x from 63khz to 15-20khz(theoretical max toggling frequency depending on input voltage/motor speed)
 5. I found that at a certain phase shift (coincidentally where the motor is at max speed) the fets run alot cooler which leads me to assume some zero voltage/current switching is occuring
-6. assuming 20khz input frequency (at 120,000 rpm) theres 800 clock cycles between each INT0 & TIM2 interrupt which really doesnt leave much room for interrupt handling (each interrupt takes around 10 uS = 160 clock cycles alone)
+6. assuming 20khz input frequency (at 120,000 rpm) theres 800 clock cycles between each INT0 & TIM1 interrupt which really doesnt leave much room for interrupt handling (each interrupt takes around 10 uS = 160 clock cycles alone)
 
-TODO: add rudimentary PWM by 
+Taking reference from traction motor waveforms, I could implement a 1 step pwm by simply letting the current freewheel by setting COMPB vect to trigger and switch everything off/disable drivers earlier before COMPA switches the direction. 
+Since official dyson vacuums only have discrete speed steps (HIGH MED LOW) at most, we can simply have a 2 speed setting (PWM_decimation to be tuned)
+TODO: add rudimentary PWM by using timer1 compB to disable the drivers earlier to let it freewheel and tune how early to let the motor freewheel
+
+//in setup,
+//enable COMPB interrupt
+//set digital pin to input_pullup
+
+
+//in main loop, digitalread an additional pin and then set PWM_decimation according to HIGH/LOW/med
+
+//in setoneshot, set compB trigger point not too small but not too big either
+OCR1B = durationin*PWM;//where 2 < PWM_decimation < phase_advance
+
+//in compb_vect, disable/ensure all drivers are in the same state ie freewheeling/open motor
+PORTC = 0;//everything off
+//DO NOT DISABLE TIMER
+
 
 
 
