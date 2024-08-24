@@ -1,7 +1,7 @@
 # DIYson
 Firmware for driving single pole motors used in dyson vacuums with arduino
 
-I had a dyson with a blown motherboard so instead of dealing with authentication rubbish i simply ripped out all the electronics and replaced them with parts i had lying around
+I had a dyson with a blown motherboard so instead of dealing with authentication rubbish i simply ripped out all the electronics and replaced them with generic parts i had lying around
 
 Things you will need: 
 1. Dyson vacuum running a single phase motor
